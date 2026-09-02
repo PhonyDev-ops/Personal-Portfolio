@@ -1,0 +1,45 @@
+﻿@page "/"
+@rendermode InteractiveServer
+
+<PageTitle>Login</PageTitle>
+
+<div class="LoginCard">
+    <h1>Break Me!</h1>
+
+    <h3>@ErrorMsg</h3>
+
+    <input @bind="inputUsername" placeholder="Enter Your Username..." />
+    <input @bind="inputPassword"  placeholder="Enter Your Password..." />
+
+    <Button Color="Color.Primary" @onclick="Login">
+        Login
+    </Button>
+</div>
+
+@code {
+    private string inputUsername = "";
+    private string inputPassword = "";
+    private string ErrorMsg = "";
+
+    List<string> Valid_Usernames = new List<string>
+    {
+        "Chan",
+        "Joash",
+        "Reniel",
+        "Hilari",
+        "Matt"
+    };
+
+    private void Login()
+    {
+        if (!Valid_Usernames.Contains(inputUsername))
+        {
+            ErrorMsg = inputUsername + " does not exist";
+            return;
+        }
+
+        ErrorMsg = "You have succefully logged in!";
+
+    }
+
+}
