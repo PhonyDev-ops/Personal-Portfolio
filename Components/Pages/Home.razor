@@ -1,6 +1,11 @@
 ﻿@page "/"
 @rendermode InteractiveServer
 
+
+@using LoginAgain.Components.Data
+@using Microsoft.EntityFrameworkCore
+@inject AppDbContext Db
+
 <PageTitle>Login</PageTitle>
 
 <div class="LoginCard">
@@ -11,35 +16,31 @@
     <input @bind="inputUsername" placeholder="Enter Your Username..." />
     <input @bind="inputPassword"  placeholder="Enter Your Password..." />
 
-    <Button Color="Blue" @onclick="Login">
+    <button Color="Blue" @onclick="Login">
         Login
-    </Button>
+    </button>
 </div>
 
 @code {
     private string inputUsername = "";
     private string inputPassword = "";
+
     private string ErrorMsg = "";
 
-    List<string> Valid_Usernames = new List<string>
+    private async Task Login()
     {
-        "Chan",
-        "Joash",
-        "Reniel",
-        "Hilari",
-        "Matt"
-    };
+        var user = await Db.Users
+            .FirstOrDefaultAsync(x =>
+                x.username == inputUsername &&
+                x.password == inputPassword);
 
-    private void Login()
-    {
-        if (!Valid_Usernames.Contains(inputUsername))
+        if (user != null)
         {
-            ErrorMsg = inputUsername + " does not exist";
-            return;
+            ErrorMsg = "Login successful!";
         }
-
-        ErrorMsg = "You have succefully logged in!";
-
+        else
+        {
+            ErrorMsg = "Invalid username or password.";
+        }
     }
-
 }
